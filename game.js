@@ -7,7 +7,7 @@ let createRect = (x, y, width, height, color) => {
   canvasContext.fillStyle = color;
   canvasContext.fillRect(x, y, width, height);
 };
-let fsp = 30;
+let fps = 30;
 let blockSize = 20;
 let mapFirst = [
   [
@@ -551,7 +551,24 @@ let update = () => {
 };
 
 let draw = () => {
+  drawWalls();
   //todo
 };
 
-let gameInterval = setInterval(gameLoop, 1000 / fsp);
+let gameInterval = setInterval(gameRender, 1000 / fps);
+
+let drawWalls = () => {
+  for (let i = 0; i < mapFirst.length; i++) {
+    for (let j = 0; j < mapFirst[0].length; j++) {
+      if (mapFirst[i][j] == "w") {
+        createRect(
+          j * blockSize,
+          i * blockSize,
+          blockSize,
+          blockSize,
+          "#black"
+        );
+      }
+    }
+  }
+};
