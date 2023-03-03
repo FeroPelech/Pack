@@ -9,6 +9,12 @@ let createRect = (x, y, width, height, color) => {
 };
 let fps = 30;
 let blockSize = 20;
+
+const DR = 4;
+const DU = 3;
+const DL = 2;
+const DB = 1;
+
 let mapFirst = [
   [
     "w",
@@ -241,7 +247,7 @@ let mapFirst = [
     "w",
   ],
   [
-    " ",
+    "w",
     " ",
     " ",
     " ",
@@ -551,6 +557,7 @@ let update = () => {
 };
 
 let draw = () => {
+  createRect(0, 0, canvas.width, canvas.height, "black");
   drawWalls();
   //todo
 };
@@ -566,7 +573,7 @@ let drawWalls = () => {
           i * blockSize,
           blockSize,
           blockSize,
-          "#black"
+          "#878f99"
         );
       }
     }
