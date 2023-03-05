@@ -8,6 +8,10 @@ class Pac {
     this.direction = DR;
     this.currentFrame = 1;
     this.frameCount = 7;
+
+    setInterval(() => {
+      this.changeAnimation();
+    }, 100);
   }
 
   moveProcess() {
@@ -71,7 +75,10 @@ class Pac {
 
   changeDirectionIfPossible() {}
 
-  changeAnimation() {}
+  changeAnimation() {
+    this.currentFrame =
+      this.currentFrame == this.frameCount ? 1 : this.currentFrame + 1;
+  }
 
   draw() {}
 

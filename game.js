@@ -554,11 +554,14 @@ let gameRender = () => {
 
 let update = () => {
   //todo
+
+  pacman.moveProcess();
 };
 
 let draw = () => {
   createRect(0, 0, canvas.width, canvas.height, "black");
   drawWalls();
+  pacman.draw();
   //todo
 };
 
@@ -579,3 +582,10 @@ let drawWalls = () => {
     }
   }
 };
+
+let createNewPacman = () => {
+  pacman = new Pac(blockSize, blockSize, blockSize, blockSize, blockSize / 5);
+};
+
+createNewPacman();
+gameRender();
