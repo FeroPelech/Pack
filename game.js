@@ -565,7 +565,7 @@ let draw = () => {
   //todo
 };
 
-let gameInterval = setInterval(gameRender, 1000 / fps);
+let gameInterval = setInterval(gameRender, 2000 / fps);
 
 let drawWalls = () => {
   for (let i = 0; i < mapFirst.length; i++) {

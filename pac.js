@@ -60,10 +60,11 @@ class Pac {
 
   checkCollision() {
     if (
-      mapFirst[this.getFirstMapY()][this.getFirstMapX()] == 1 ||
-      mapFirst[this.getFirstMapYRightSide()][this.getFirstMapX] == 1 ||
-      mapFirst[this.getFirstMapY()][this.getFirstMapXRightSide] == 1 ||
-      mapFirst[this.getFirstMapYRightSide()][this.getFirstMapXRightSide()] == 1
+      mapFirst[this.getFirstMapY()][this.getFirstMapX()] == "w" ||
+      mapFirst[this.getFirstMapYRightSide()][this.getFirstMapX] == "w" ||
+      mapFirst[this.getFirstMapY()][this.getFirstMapXRightSide] == "w" ||
+      mapFirst[this.getFirstMapYRightSide()][this.getFirstMapXRightSide()] ==
+        "w"
     ) {
       return true;
     } else {
@@ -80,7 +81,24 @@ class Pac {
       this.currentFrame == this.frameCount ? 1 : this.currentFrame + 1;
   }
 
-  draw() {}
+  draw() {
+    canvasContext.save();
+    canvasContext.translate(this.x + blockSize / 2, this.y + blockSize / 2);
+    canvasContext.rotate((this.direction * 90 * Math.PI) / 180);
+    canvasContext.translate(-this.x - blockSize / 2, -this.y - blockSize / 2);
+    canvasContext.drawImage(
+      pacFrames,
+      this.currentFrame - 1 / blockSize,
+      0,
+      blockSize,
+      blockSize,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+    canvasContext.restore();
+  }
 
   getFirstMapX() {
     return parseInt(this.x / blockSize);
