@@ -6,6 +6,8 @@ class Pac {
     this.height = height;
     this.velocity = velocity;
     this.direction = DR;
+    this.currentFrame = 1;
+    this.frameCount = 7;
   }
 
   moveProcess() {
@@ -18,11 +20,52 @@ class Pac {
 
   eat() {}
 
-  moveBackwards() {}
+  moveBackwards() {
+    switch (this.direction) {
+      case DR:
+        this.x -= this.velocity;
+        break;
+      case DU:
+        this.y += this.velocity;
+        break;
+      case DL:
+        this.x += this.velocity;
+        break;
+      case DB:
+        this.y -= this.velocity;
+        break;
+    }
+  }
 
-  moveForwards() {}
+  moveForwards() {
+    switch (this.direction) {
+      case DR:
+        this.x += this.velocity;
+        break;
+      case DU:
+        this.y -= this.velocity;
+        break;
+      case DL:
+        this.x -= this.velocity;
+        break;
+      case DB:
+        this.y += this.velocity;
+        break;
+    }
+  }
 
-  checkCollision() {}
+  checkCollision() {
+    if (
+      mapFirst[this.getFirstMapY()][this.getFirstMapX()] == 1 ||
+      mapFirst[this.getFirstMapYRightSide()][this.getFirstMapX] == 1 ||
+      mapFirst[this.getFirstMapY()][this.getFirstMapXRightSide] == 1 ||
+      mapFirst[this.getFirstMapYRightSide()][this.getFirstMapXRightSide()] == 1
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   checkGhostCollision() {}
 
@@ -31,4 +74,20 @@ class Pac {
   changeAnimation() {}
 
   draw() {}
+
+  getFirstMapX() {
+    return parseInt(this.x / blockSize);
+  }
+
+  getFirstMapY() {
+    return parseInt(this.y / blockSize);
+  }
+
+  getFirstMapXRightSide() {
+    return parseInt((this.x + 0.9999 * blockSize) / blockSize);
+  }
+
+  getFirstMapYRightSide() {
+    return parseInt((this.y + 0.9999 * blockSize) / blockSize);
+  }
 }
