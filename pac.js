@@ -23,7 +23,20 @@ class Pac {
     }
   }
 
-  eat() {}
+  eat() {
+    for (let i = 0; i < mapFirst.length; i++) {
+      for (let j = 0; j < mapFirst[0].length; j++) {
+        if (
+          mapFirst[i][j] == " " &&
+          this.getFirstMapX == j &&
+          this.getFirstMapY == i
+        ) {
+          mapFirst[i][j] = 3;
+          score++;
+        }
+      }
+    }
+  }
 
   moveBackwards() {
     switch (this.direction) {

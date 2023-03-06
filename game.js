@@ -9,6 +9,7 @@ let createRect = (x, y, width, height, color) => {
 };
 let fps = 30;
 let blockSize = 20;
+let score = 0;
 
 const DR = 4;
 const DU = 3;
@@ -553,9 +554,8 @@ let gameRender = () => {
 };
 
 let update = () => {
-  //todo
-
   pacman.moveProcess();
+  pacman.eat();
 };
 
 let draw = () => {
@@ -582,7 +582,7 @@ let drawMass = () => {
   }
 };
 
-let gameInterval = setInterval(gameRender, 2000 / fps);
+let gameInterval = setInterval(gameRender, 1000 / fps);
 
 let drawWalls = () => {
   for (let i = 0; i < mapFirst.length; i++) {
