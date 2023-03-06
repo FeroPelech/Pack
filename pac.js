@@ -8,6 +8,7 @@ class Pac {
     this.direction = DR;
     this.currentFrame = 1;
     this.frameCount = 7;
+    this.nextDirection = this.direction;
 
     setInterval(() => {
       this.changeAnimation();
@@ -74,7 +75,19 @@ class Pac {
 
   checkGhostCollision() {}
 
-  changeDirectionIfPossible() {}
+  changeDirectionIfPossible() {
+    if (this.direction == this.nextDirection) return;
+
+    let tempDirection = this.direction;
+    this.direction = this.nextDirection;
+    this.moveForwards();
+    if (this.checkCollision()) {
+      this.moveBackwards();
+      this.direction = tempDirection;
+    } else {
+      this.moveBackwards();
+    }
+  }
 
   changeAnimation() {
     this.currentFrame =
@@ -88,7 +101,7 @@ class Pac {
     canvasContext.translate(-this.x - blockSize / 2, -this.y - blockSize / 2);
     canvasContext.drawImage(
       pacFrames,
-      this.currentFrame - 1 / blockSize,
+      (this.currentFrame - 1) * blockSize,
       0,
       blockSize,
       blockSize,

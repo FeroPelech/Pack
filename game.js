@@ -561,8 +561,25 @@ let update = () => {
 let draw = () => {
   createRect(0, 0, canvas.width, canvas.height, "black");
   drawWalls();
+  drawMass();
   pacman.draw();
   //todo
+};
+
+let drawMass = () => {
+  for (let i = 0; i < mapFirst.length; i++) {
+    for (let j = 0; j < mapFirst[0].length; j++) {
+      if (mapFirst[i][j] == " ") {
+        createRect(
+          j * blockSize + blockSize / 3,
+          i * blockSize + blockSize / 3,
+          blockSize / 3,
+          blockSize / 3,
+          "yellow"
+        );
+      }
+    }
+  }
 };
 
 let gameInterval = setInterval(gameRender, 2000 / fps);
@@ -589,3 +606,23 @@ let createNewPacman = () => {
 
 createNewPacman();
 gameRender();
+
+window.addEventListener("keydown", (event) => {
+  let k = event.keyCode;
+
+  setTimeout(() => {
+    if (k == 37 || k == 65) {
+      //left
+      pacman.nextDirection = DL;
+    } else if (k == 38 || k == 87) {
+      //up
+      pacman.nextDirection = DU;
+    } else if (k == 39 || k == 68) {
+      //right
+      pacman.nextDirection = DR;
+    } else if (k == 40 || k == 83) {
+      //down
+      pacman.nextDirection = DB;
+    }
+  }, 1);
+});
