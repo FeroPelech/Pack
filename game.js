@@ -10,11 +10,20 @@ let createRect = (x, y, width, height, color) => {
 let fps = 30;
 let blockSize = 20;
 let score = 0;
+let hunters = [];
+let huntersSum = 4;
 
 const DR = 4;
 const DU = 3;
 const DL = 2;
 const DB = 1;
+
+let hunterLocation = [
+  { x: 0, y: 0 },
+  { x: 176, y: 0 },
+  { x: 0, y: 121 },
+  { x: 176, y: 121 },
+];
 
 let mapFirst = [
   [
@@ -548,9 +557,32 @@ let mapFirst = [
   ],
 ];
 
+let createNewPacman = () => {
+  pacman = new Pac(blockSize, blockSize, blockSize, blockSize, blockSize / 5);
+};
+
+let createNewHunter = () => {
+  hunters = [];
+  for (let i = 0; i < huntersSum; i++) {
+    let newHunter = new Hunter(
+      9 * blockSize + (i % 2 == 0 ? 0 : 1) * blockSize,
+      10 * blockSize + (i % 2 == 0 ? 0 : 1) * blockSize,
+      blockSize,
+      blockSize,
+      Pac.velocity / 2,
+      hunterLocation[i % 4].x,
+      hunterLocation[i % 4].y,
+      124,
+      116,
+      6 + i
+    );
+    hunters.push(newHunter);
+  }
+};
+
 let gameRender = () => {
-  update();
   draw();
+  update();
 };
 
 let update = () => {
@@ -558,12 +590,30 @@ let update = () => {
   pacman.eat();
 };
 
+let scoreboard = () => {
+  canvasContext.font = "25px Emulogic";
+  canvasContext.fillStyle = "grey";
+  canvasContext.fillText(
+    "Score: " + score,
+    0,
+    blockSize * (mapFirst.length + 1)
+  );
+};
+
+let drawHunters = () => {
+  for (let i = 0; i < hunters.length; i++) {
+    hunters[i].draw();
+  }
+};
+
 let draw = () => {
+  //canvasContext(0, 0, canvas.width, canvas.height);
   createRect(0, 0, canvas.width, canvas.height, "black");
   drawWalls();
   drawMass();
   pacman.draw();
-  //todo
+  scoreboard();
+  drawHunters();
 };
 
 let drawMass = () => {
@@ -600,11 +650,8 @@ let drawWalls = () => {
   }
 };
 
-let createNewPacman = () => {
-  pacman = new Pac(blockSize, blockSize, blockSize, blockSize, blockSize / 5);
-};
-
 createNewPacman();
+createNewHunter();
 gameRender();
 
 window.addEventListener("keydown", (event) => {

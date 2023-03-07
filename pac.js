@@ -28,10 +28,10 @@ class Pac {
       for (let j = 0; j < mapFirst[0].length; j++) {
         if (
           mapFirst[i][j] == " " &&
-          this.getFirstMapX == j &&
-          this.getFirstMapY == i
+          this.getFirstMapX() == j &&
+          this.getFirstMapY() == i
         ) {
-          mapFirst[i][j] = 3;
+          mapFirst[i][j] = "e ";
           score++;
         }
       }
@@ -135,10 +135,10 @@ class Pac {
   }
 
   getFirstMapXRightSide() {
-    return parseInt((this.x + 0.9999 * blockSize) / blockSize);
+    return parseInt((this.x + 0.99 * blockSize) / blockSize);
   }
 
   getFirstMapYRightSide() {
-    return parseInt((this.y + 0.9999 * blockSize) / blockSize);
+    return parseInt((this.y + 0.99 * blockSize) / blockSize);
   }
 }
