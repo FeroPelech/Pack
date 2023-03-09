@@ -25,6 +25,16 @@ let hunterLocation = [
   { x: 176, y: 121 },
 ];
 
+let targetForHunters = [
+  { x: blockSize, y: blockSize },
+  { x: blockSize, y: (mapFirst.length - 2) * blockSize },
+  { x: (mapFirst[0].length - 2) * blockSize, y: blockSize },
+  {
+    x: (mapFirst[0].length - 2) * blockSize,
+    y: (mapFirst.length - 2) * blockSize,
+  },
+];
+
 let mapFirst = [
   [
     "w",

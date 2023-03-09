@@ -22,9 +22,23 @@ class Hunter {
     this.imageHeight = imageHeight;
     this.imageWidth = imageWidth;
     this.range = range;
+    this.randomTargetIndex = parseInt(Math.random() * targetForHunters.length);
+    setInterval(() => {
+      this.changeRandomDirection();
+    }, 1000);
+  }
+
+  changeRandomDirection() {
+    this.randomTargetIndex += 1;
+    this.randomTargetIndex = this.randomTargetIndex % 4;
   }
 
   moveProcess() {
+    if (this.isInRangeOfPacman()) {
+      target = pacman;
+    } else {
+      this.target = targetForHunters[this.randomTargetIndex];
+    }
     this.changeDirectionIfPossible();
     this.moveForwards();
     if (this.checkCollision()) {
@@ -82,11 +96,31 @@ class Hunter {
 
   checkGhostCollision() {}
 
-  changeDirectionIfPossible() {
-    if (this.direction == this.nextDirection) return;
+  isInRangeOfPacman() {
+    let xDistance = Math.abs(pacman.getFirstMapX() - this.getFirstMapX());
+    let yDistance = Math.abs(pacman.getFirstMapY() - this.getFirstMapY());
+    if (
+      Math.sqrt(xDistance * xDistance + yDistance * yDistance) <= this.range
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
+  changeDirectionIfPossible() {
     let tempDirection = this.direction;
-    this.direction = this.nextDirection;
+    this.direction = this.calculateNewDirection(
+      mapFirst,
+      parseInt(this.target.x / blockSize),
+      parseInt(this.target.y / blockSize)
+    );
+
+    if (typeof this.direction == "undefined") {
+      this.direction = tempDirection;
+      return;
+    }
+
     this.moveForwards();
     if (this.checkCollision()) {
       this.moveBackwards();
@@ -94,6 +128,71 @@ class Hunter {
     } else {
       this.moveBackwards();
     }
+  }
+
+  calculateNewDirection(map, destX, destY) {
+    let mp = [];
+    for (let i = 0; i < mapFirst.length; i++) {
+      mp[i] = map[i].slice();
+    }
+    let que = [{ x: this.getFirstMapX(), y: this.getFirstMapY, moves: [] }];
+
+    while (que.length > 0) {
+      let poped = que.shift();
+      if (poped.x == destX && poped.y == destY) {
+        return poped.moves[0];
+      } else {
+        mp[poped.y][poped.x] = 1;
+        let neighbourList = this.addNeighbours(poped, mp);
+        for (let i = 0; i < neighbourList.length; i++) {
+          que.push(neighbourList[i]);
+        }
+      }
+    }
+    return DU;
+  }
+
+  addNeighbours(poped, mp) {
+    let que = [];
+    let numberOfRows = mp.length;
+    let numberOfColumns = mp[0].length;
+    if (
+      poped.x - 1 >= 0 &&
+      poped.x - 1 < numberOfRows &&
+      mp[poped.y][poped.x - 1] != 1
+    ) {
+      let tempMoves = poped.moves.slice();
+      tempMoves.push(DR);
+      que.push({ x: poped.x - 1, y: poped, moves: tempMoves });
+    }
+    if (
+      poped.x + 1 >= 0 &&
+      poped.x + 1 < numberOfRows &&
+      mp[poped.y][poped.x + 1] != 1
+    ) {
+      let tempMoves = poped.moves.slice();
+      tempMoves.push(DL);
+      que.push({ x: poped.x + 1, y: poped, moves: tempMoves });
+    }
+    if (
+      poped.y - 1 >= 0 &&
+      poped.y - 1 < numberOfRows &&
+      mp[poped.y - 1][poped.x] != 1
+    ) {
+      let tempMoves = poped.moves.slice();
+      tempMoves.push(DU);
+      que.push({ x: poped.x, y: poped.y - 1, moves: tempMoves });
+    }
+    if (
+      poped.y + 1 >= 0 &&
+      poped.y + 1 < numberOfRows &&
+      mp[poped.y + 1][poped.x] != 1
+    ) {
+      let tempMoves = poped.moves.slice();
+      tempMoves.push(DB);
+      que.push({ x: poped.x, y: poped.y + 1, moves: tempMoves });
+    }
+    return que;
   }
 
   changeAnimation() {
